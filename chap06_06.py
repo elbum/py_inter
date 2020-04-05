@@ -20,3 +20,41 @@
 #
 
 # GIL 우회
+# 멀티프로세싱
+
+
+import os
+import time
+from concurrent import futures
+
+WORK_LIST = [100000,1000000,10000000,100000000]
+
+def sum_generator(n):
+    return sum(n for n in range(1,n+1))
+
+def main():
+    # Worker count
+    worker = min(10,len(WORK_LIST))
+    # 시작시간
+    start_time = time.time()
+
+    # 결과건수
+    # ProcessPoolExecutor
+    # ThreadPoolExecutor
+    with futures.ProcessPoolExecutor(max_workers=worker) as executor:
+        # map 은 작업순서를 유지하고 즉시실행함.
+        result = executor.map(sum_generator,WORK_LIST)
+
+
+
+
+
+
+    # 종료시간
+    end_time = time.time() - start_time
+
+    msg = '\n Result -> {} time : {:.2f}s'
+    print(msg.format(list(result),end_time))
+
+if __name__=='__main__':
+    main()
